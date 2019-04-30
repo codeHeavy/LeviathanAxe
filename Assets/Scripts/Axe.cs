@@ -22,7 +22,11 @@ public class Axe : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        rb.isKinematic = true;
-        thrown = false;
+        if (collision.gameObject.layer == 9)
+        {
+            rb.isKinematic = true;
+            thrown = false;
+            GetComponent<TrailRenderer>().enabled = false;
+        }
     }
 }

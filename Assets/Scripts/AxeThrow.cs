@@ -23,6 +23,8 @@ public class AxeThrow : MonoBehaviour
 
     float returnTime;
     bool recallAxe = false;
+
+    TrailRenderer axeTrail;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,8 @@ public class AxeThrow : MonoBehaviour
         axeStartPosition = axeTransform.localPosition;
         axeStartRotation = axeTransform.localEulerAngles;
         axeStartWrldPosition = axeTransform.position;
+        axeTrail = axeTransform.GetComponent<TrailRenderer>();
+        axeTrail.enabled = false;
     }
 
     // Update is called once per frame
@@ -41,11 +45,12 @@ public class AxeThrow : MonoBehaviour
         Aim();
         if(!equipped)
         {
-            if (aiming && Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 axeStopPosition = axeTransform.position;
                 recallAxe = true;
                 axe.gameObject.GetComponent<Axe>().thrown = true;
+                axeTrail.enabled = true;
             }
             if (recallAxe)
                 ReturnAxe();
@@ -71,6 +76,7 @@ public class AxeThrow : MonoBehaviour
 
     public void Throw()
     {
+        axeTrail.enabled = true;
         equipped = false;
         axe.isKinematic = false;
         axe.transform.parent = null;
@@ -88,6 +94,7 @@ public class AxeThrow : MonoBehaviour
         {
             recallAxe = false;
             axeTransform.parent = hand;
+            axeTrail.enabled = false;
             axe.gameObject.GetComponent<Axe>().thrown = false;
             axeTransform.localPosition = axeStartPosition;
             axeTransform.localEulerAngles = axeStartRotation;
